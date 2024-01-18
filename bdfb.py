@@ -688,10 +688,10 @@ def parse_data_content(html,title,icon):
             data_df = pd.DataFrame([data_t])
             print(f"运行data_t:---------------------{1}")
         # 判断是否需要加表头
-        if not os.path.exists(f'./fabao_result0.csv'):
-            data_df.to_csv(f'./fabao_result0.csv', mode='a', index=False)
+        if not os.path.exists(f'./fabao_result2.csv'):
+            data_df.to_csv(f'./fabao_result2.csv', mode='a', index=False)
         else:
-            data_df.to_csv(f'./fabao_result0.csv', mode='a', index=False, header=None)
+            data_df.to_csv(f'./fabao_result2.csv', mode='a', index=False, header=None)
 
 
 def to_sifaanli(driver,keyword):
