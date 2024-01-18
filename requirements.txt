@@ -1,0 +1,16 @@
+ddddocr==1.4.7
+fake_useragent==1.2.1
+opencv_python==4.8.0.76
+opencv_python_headless==4.8.0.76
+pandas==2.0.3
+Pillow==9.5.0
+pytesseract==0.3.10
+undetected_chromedriver==3.5.2
+ddddocr==1.4.7
+fake_useragent==1.2.1
+loguru==0.7.0
+pipe==2.0
+redis==2.10.6
+selectolax==0.3.17
+beautifulsoup4 ==4.12.2
+selenium==4.11.2
