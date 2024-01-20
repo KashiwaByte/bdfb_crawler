@@ -161,8 +161,8 @@ def to_bdfb(driver,entrance=11):
     :param driver: 驱动
     :return: 驱动
     """
-    key = '072508574177'
-    pwd = '392573'
+    key = '066457282395'
+    pwd = '535746'
     user_name = WebDriverWait(driver, 10, 0.5).until(lambda x: x.find_element(By.ID, 'user_name'))
     user_name.click()
     user_name.send_keys(key)  # 用户名
@@ -218,7 +218,7 @@ def to_bdfb(driver,entrance=11):
                 bdfb2.click()
             break
     '''
-    time.sleep(50)
+    time.sleep(120)
     print("开始采集")
     all_window = driver.window_handles
     if len(all_window) > 1:
@@ -647,6 +647,7 @@ def parse_data_content(html,title,icon):
                 for xw in item:
                     if "谣言" in xw.text:
                         fatiao_content = xw.text
+                        print(xw.text)
                         match = re.findall("[（\(）\)一二三四五六七八九十0-9]+",xw.text)
                         fatiao_name = f"{title.strip()}{tiao.strip()}第{str(match[0]).strip()}项"
                         # print(f"xw:{match}--{fatiao_name}") 
@@ -748,8 +749,9 @@ if __name__ == '__main__':
                 else:
                     time.sleep(2)
             # 获取当前页标题元素列表
-            title_list = WebDriverWait(driver, 10, 0.5).until(lambda x:x.find_elements(By.CSS_SELECTOR, '#rightContent > div.grid-right > div:nth-child(1) > div.accompanying-wrap >div.item'))
-            # print(len(title_list))
+            title_list = WebDriverWait(driver, 10, 0.5).until(lambda x:x.find_elements(By.CSS_SELECTOR, '#app > div > div.container.container-body.main-container > div > div.content > div > div.container.search-result > div.article-grid-right > div:nth-child(1) > div.result > div.articalIndex-container > div > div.el-table__body-wrapper.is-scrolling-none > table > tbody>tr.el-table__row'     
+))
+            print(len(title_list))
             # time.sleep(100)
             for i ,t in enumerate(title_list):
                 if (i + 1)< skip_tiao_count:
@@ -761,6 +763,8 @@ if __name__ == '__main__':
                 else:
                     icon = False
                 # 点击标题链接
+               # element = WebDriverWait(driver, 10).until(
+               #EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[target="_blank"][flink="true"]')))
                 while True:
                     try:
                         tt = t.find_element(By.TAG_NAME, 'a')
@@ -768,11 +772,24 @@ if __name__ == '__main__':
                         time.sleep(0.5)
                     else:
                         break
-                title_s = tt.get_attribute('logother')
-                title = str(title_s).split('、',maxsplit=1)[1]
+                #中央法规可用    
+                #title_s = tt.get_attribute('logother')
+                #title = str(title_s).split('、',maxsplit=1)[1]
+                #print(icon,title)
+                
+                #地方法规可用
+                title_s = tt.text
+                if title_s:
+                    title = title_s
+                else:
+                    title = ""
                 print(icon,title)
+                
                 # time.sleep(1)
                 driver.implicitly_wait(2)
+                #tt=WebDriverWait(driver, 10).until(
+                #EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[target="_blank"][flink="true"]')))
+                #print("可点击")
                 tt.click()
                 while True:
                     # 跳转页面，解析数据，关闭页面
@@ -790,9 +807,19 @@ if __name__ == '__main__':
             time.sleep(1)
             # next_page = driver.execute_script("return document.querySelector('#rightContent > div.grid-right > div:nth-child(1) > div:nth-child(3) > ul > li:nth-child(12) > a').hasAttribute('pageindex');")
             # if next_page:
-            next_page = WebDriverWait(driver, 10, 0.5).until(lambda x:x.find_element(By.LINK_TEXT,'下一页'))
+       
+            
+            #高级检索
+            next_page = WebDriverWait(driver, 10,0.5).until(
+            EC.element_to_be_clickable((By.XPATH, "//span[text()='下一页']")))
             next_page.click()
+            time.sleep(5)
+           
+            #普通检索
+           # next_page = WebDriverWait(driver, 10, 0.5).until(lambda x:x.find_element(By.LINK_TEXT,'{page_count}'))
+           # next_page.click()
             time.sleep(2)
             # else:
                 # break
             page_count += 1
+         
